@@ -1,6 +1,17 @@
 <template>
-  <div class="about">
-    <button class="btn btn-block">This is an about page</button>
-
+  <div class="home">
+    <Todo/>
   </div>
 </template>
+
+<script>
+  // @ is an alias to /src
+  import Todo from '@/components/Inventory/Todo.vue'
+
+  export default {
+    name: 'home',
+    components: {
+      Todo
+    }
+  }
+</script>
