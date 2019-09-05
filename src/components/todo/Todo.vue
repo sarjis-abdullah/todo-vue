@@ -7,40 +7,46 @@
             <div class="col-md-6 offset-3">
                 <h1 class="text text-danger">TODOS</h1>
             </div>
-            <div class="col-md-6 offset-3">
+            <div class="col-md-6 offset-3 mb-3">
                 <input @keyup.enter="addTodo" class="form-control text text-center" type="text"
                        placeholder="What needs to be done?"
                        v-model="newText" required>
             </div>
         </div>
         <div class="row">
-
             <div class="col-md-6 offset-3">
-                <ul class="list-group bg-danger">
+                <ul class="list-group">
                     <li class="list-group-item" v-for="(todo,i) in filteredTodos" :key="i">
                         <div class="row">
                             <div class="col-md-2">
-                                <input class="btn btn-info" type="checkbox" v-model="todo.completed">
-
+                                <label v-if="todo.completed===true"  style="font-size: 2.5em">
+                                    <input class="fa fa-angellist"  type="checkbox" v-model="todo.completed">
+                                    <span  class="cr"><i class="fa fa-angellist"></i></span>
+                                </label>
+                                <label v-else style="font-size: 2.5em">
+                                    <input type="checkbox" v-model="todo.completed">
+                                    <span class="cr"><i class="fa fa-hand-o-down"></i></span>
+                                </label>
                             </div>
                             <div class="col-md-8">
-                                <label class="col-form-label-lg">{{todo.text}}</label>
-
+                                <label v-if="todo.completed===true" class="col-form-label-lg">{{todo.text}}</label>
+                                <label v-else class="col-form-label-lg"><del>{{todo.text}}</del></label>
                             </div>
                             <div class="col-md-2">
-                                <button class="table-hover btn btn-danger" @click="removeTodo(i)">x</button>
-
+                                <button class="fa fa-minus-square" @click="removeTodo(i)"></button>
                             </div>
                         </div>
-
                     </li>
                 </ul>
-                <!--                <p>{{remainingTodo}} Todo Left</p>-->
-                <button @click="visibility='all'">All</button>
-                <button @click="visibility='active'">Active</button>
-                <button @click="visibility='completed'">Completed</button>
+                <p>{{remainingTodo}} {{remainingTodo===1?"Todo":'Todos'}} Left</p>
 
-                <!--<button v-if="">Clear Completed</button>-->
+<!--                <button v-if="">Clear Completed</button>-->
+            </div>
+            <div class="col-md-6 offset-3 my-3">
+                <button class="btn btn-info mx-1" @click="visibility='all'">All</button>
+                <button class="btn btn-primary mx-1" @click="visibility='active'">Active</button>
+                <button class="btn btn-success mx-1" @click="visibility='completed'">Completed</button>
+
             </div>
         </div>
     </div>
@@ -68,6 +74,7 @@
 
                 })
                 localStorage.setItem('localTodo', JSON.stringify(this.todos))
+                this.newText = ''
 
             },
             removeTodo(i) {
@@ -92,18 +99,19 @@
             },
         },
         computed: {
-            // remainingTodo() {
-            //     let totalTodo = 0;
-            //     this.todos.forEach((todo) => {
-            //         let i = 1;
-            //         if (todo.completed === false)
-            //             totalTodo += i
-            //     });
-            //     return totalTodo
-            // },
+            remainingTodo() {
+                let storedTodos = JSON.parse(localStorage.getItem("localTodo"))
+
+                let count = 0;
+                this.todos.forEach((todo) => {
+                    let i = 1;
+                    if (todo.completed === false)
+                        count += i
+                });
+                return count
+            },
 
             filteredTodos() {
-                //  let holder =this.todos
                 if (this.visibility === 'all') {
                     return this.todos
                 } else if (this.visibility === 'active') {
