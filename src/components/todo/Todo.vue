@@ -45,7 +45,6 @@
                 <button class="btn btn-primary mx-1" @click="visibility='active'">Active</button>
                 <button class="btn btn-success mx-1" @click="visibility='completed'">Completed</button>
             </div>
-            {{getTodos}}
         </div>
     </div>
 </template>
@@ -89,23 +88,17 @@
             filteredTodos() {
                 if (this.visibility === 'all') {
                     return this.todos
-                    // return this.getTodos
                 } else if (this.visibility === 'active') {
                     return this.todos.filter(todo => !todo.completed)
-                    // return this.getTodos.filter(todo => !todo.completed)
                 } else {
                     return this.todos.filter(todo => todo.completed)
-                    // return this.getTodos.filter(todo => todo.completed)
                 }
             },
-            getTodos(){
-                this.todos = this.$store.getters.getLocalTodos
-                return this.$store.getters.getLocalTodos
-            }
         },
         created() {
-            this.$store.dispatch('getLocalStorageData')
-            //this.todos = JSON.parse(localStorage.getItem('localTodo') || '[]')
+            this.$store.dispatch('getLocalStorageData').then(()=>{
+                this.todos = this.$store.getters.getLocalTodos
+            })
         }
     }
 </script>
