@@ -20,7 +20,7 @@
                         <div class="row">
                             <div class="col-md-2">
                                 <label v-if="todo.completed===true"  style="font-size: 2.5em">
-                                    <input class="fa fa-angellist"  type="checkbox" v-model="todo.completed">
+                                    <input class=""  type="checkbox" v-model="todo.completed">
                                     <span  class="cr"><i class="fa fa-angellist"></i></span>
                                 </label>
                                 <label v-else style="font-size: 2.5em">
@@ -39,14 +39,11 @@
                     </li>
                 </ul>
                 <p>{{remainingTodo}} {{remainingTodo===1?"Todo":'Todos'}} Left</p>
-
-<!--                <button v-if="">Clear Completed</button>-->
             </div>
             <div class="col-md-6 offset-3 my-3">
                 <button class="btn btn-info mx-1" @click="visibility='all'">All</button>
                 <button class="btn btn-primary mx-1" @click="visibility='active'">Active</button>
                 <button class="btn btn-success mx-1" @click="visibility='completed'">Completed</button>
-
             </div>
         </div>
     </div>
@@ -63,45 +60,23 @@
                 visibility: 'all'
             }
         },
-
         methods: {
             addTodo() {
-
                 this.todos.push({
                     text: this.newText,
                     completed: false,
                     id: new Date().getUTCMilliseconds() + '' + new Date().getUTCFullYear() + '' + new Date().getSeconds()
-
                 })
                 localStorage.setItem('localTodo', JSON.stringify(this.todos))
                 this.newText = ''
-
             },
             removeTodo(i) {
-                /*
-                let storedTodos = JSON.parse(localStorage.getItem("localTodo"))
-                storedTodos.forEach(storedTodo => {
-                    console.log(storedTodo.id)
-                    if (storedTodo.id === todo.id) {
-                        storedTodos.splice(storedTodo, 1)
-                        localStorage.removeItem(storedTodo.id)
-                        console.log(storedTodo)
-                    }
-                })*/
-
                 this.todos.splice(i, 1)
                 localStorage.setItem('localTodo', JSON.stringify(this.todos))
-            },
-            selectAll() {
-                this.todos.forEach((todo) => {
-                    todo.completed = !todo.completed
-                });
             },
         },
         computed: {
             remainingTodo() {
-                let storedTodos = JSON.parse(localStorage.getItem("localTodo"))
-
                 let count = 0;
                 this.todos.forEach((todo) => {
                     let i = 1;
@@ -122,8 +97,6 @@
             }
         },
         created() {
-            // this.todos.push(JSON.parse(localStorage.getItem('localTodo')))
-            //console.log(JSON.parse(localStorage.getItem('localTodo')))
             this.todos = JSON.parse(localStorage.getItem('localTodo') || '[]')
         }
     }
