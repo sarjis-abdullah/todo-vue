@@ -1,9 +1,6 @@
 <template>
     <div class="container">
         <div class="row">
-            <!--            <form class="col-md-6 offset-3" @submit.prevent="addTodo">-->
-            <!--                <input class="custom-checkbox" type="checkbox" @click="selectAll">-->
-            <!--            </form>-->
             <div class="col-md-6 offset-3">
                 <h1 class="text text-danger">TODOS</h1>
             </div>
