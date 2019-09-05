@@ -1,20 +1,17 @@
 <template>
     <div class="container">
-
         <div class="row">
-<!--            <form class="col-md-6 offset-3" @submit.prevent="addTodo">-->
-<!--                <input class="custom-checkbox" type="checkbox" @click="selectAll">-->
-
-
-<!--            </form>-->
+            <!--            <form class="col-md-6 offset-3" @submit.prevent="addTodo">-->
+            <!--                <input class="custom-checkbox" type="checkbox" @click="selectAll">-->
+            <!--            </form>-->
             <div class="col-md-6 offset-3">
                 <h1 class="text text-danger">TODOS</h1>
             </div>
             <div class="col-md-6 offset-3">
-                <input @keyup.enter="addTodo" class="form-control" type="text" placeholder="What needs to be done?"
+                <input @keyup.enter="addTodo" class="form-control text text-center" type="text"
+                       placeholder="What needs to be done?"
                        v-model="newText" required>
             </div>
-
         </div>
         <div class="row">
 
@@ -51,11 +48,10 @@
 
 <script>
     export default {
-        name: "Calculation",
+        name: "Todo",
         data() {
             return {
-                todos: [
-                ],
+                todos: [],
                 newText: '',
                 totalTodo: 0,
                 visibility: 'all'
@@ -68,13 +64,26 @@
                 this.todos.push({
                     text: this.newText,
                     completed: false,
-                    id: 5
+                    id: new Date().getUTCMilliseconds() + '' + new Date().getUTCFullYear() + '' + new Date().getSeconds()
+
                 })
                 localStorage.setItem('localTodo', JSON.stringify(this.todos))
 
             },
             removeTodo(i) {
+                /*
+                let storedTodos = JSON.parse(localStorage.getItem("localTodo"))
+                storedTodos.forEach(storedTodo => {
+                    console.log(storedTodo.id)
+                    if (storedTodo.id === todo.id) {
+                        storedTodos.splice(storedTodo, 1)
+                        localStorage.removeItem(storedTodo.id)
+                        console.log(storedTodo)
+                    }
+                })*/
+
                 this.todos.splice(i, 1)
+                localStorage.setItem('localTodo', JSON.stringify(this.todos))
             },
             selectAll() {
                 this.todos.forEach((todo) => {
@@ -94,20 +103,20 @@
             // },
 
             filteredTodos() {
-              //  let holder =this.todos
+                //  let holder =this.todos
                 if (this.visibility === 'all') {
                     return this.todos
                 } else if (this.visibility === 'active') {
-                    this.todos = this.todos.filter(todo => todo.completed === false)
+                    return this.todos.filter(todo => !todo.completed)
                 } else {
-                    this.todos = this.todos.filter(todo => todo.completed === true)
+                    return this.todos.filter(todo => todo.completed)
                 }
             }
         },
         created() {
-          // this.todos.push(JSON.parse(localStorage.getItem('localTodo')))
+            // this.todos.push(JSON.parse(localStorage.getItem('localTodo')))
             //console.log(JSON.parse(localStorage.getItem('localTodo')))
-            this.todos = JSON.parse(localStorage.getItem('localTodo'))
+            this.todos = JSON.parse(localStorage.getItem('localTodo') || '[]')
         }
     }
 </script>
