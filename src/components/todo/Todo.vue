@@ -1,49 +1,44 @@
 <template>
     <div class="container">
-
         <div class="row">
-<!--            <form class="col-md-6 offset-3" @submit.prevent="addTodo">-->
-<!--                <input class="custom-checkbox" type="checkbox" @click="selectAll">-->
-
-
-<!--            </form>-->
             <div class="col-md-6 offset-3">
                 <h1 class="text text-danger">TODOS</h1>
             </div>
-            <div class="col-md-6 offset-3">
-                <input @keyup.enter="addTodo" class="form-control" type="text" placeholder="What needs to be done?"
+            <div class="col-md-6 offset-3 mb-3">
+                <input @keyup.enter="addTodo" class="form-control text text-center" type="text"
+                       placeholder="What needs to be done?"
                        v-model="newText" required>
             </div>
-
         </div>
         <div class="row">
-
             <div class="col-md-6 offset-3">
-                <ul class="list-group bg-danger">
+                <ul class="list-group">
                     <li class="list-group-item" v-for="(todo,i) in filteredTodos" :key="i">
                         <div class="row">
                             <div class="col-md-2">
-                                <input class="btn btn-info" type="checkbox" v-model="todo.completed">
+                                <label style="font-size: 2.5em">
+                                    <input class="" type="checkbox" v-model="todo.completed">
+                                </label>
 
                             </div>
                             <div class="col-md-8">
-                                <label class="col-form-label-lg">{{todo.text}}</label>
-
+                                <label v-if="todo.completed===true" class="col-form-label-lg"><del>{{todo.text}}</del></label>
+                                <label v-else class="col-form-label-lg">
+                                    {{todo.text}}
+                                </label>
                             </div>
                             <div class="col-md-2">
-                                <button class="table-hover btn btn-danger" @click="removeTodo(i)">x</button>
-
+                                <button class="fa fa-minus-square" @click="removeTodo(i)"></button>
                             </div>
                         </div>
-
                     </li>
                 </ul>
-                <!--                <p>{{remainingTodo}} Todo Left</p>-->
-                <button @click="visibility='all'">All</button>
-                <button @click="visibility='active'">Active</button>
-                <button @click="visibility='completed'">Completed</button>
-
-                <!--<button v-if="">Clear Completed</button>-->
+                <p>{{remainingTodo}} {{remainingTodo===1?"Todo":'Todos'}} Left</p>
+            </div>
+            <div class="col-md-6 offset-3 my-3">
+                <button class="btn btn-info mx-1" @click="visibility='all'">All</button>
+                <button class="btn btn-primary mx-1" @click="visibility='active'">Active</button>
+                <button class="btn btn-success mx-1" @click="visibility='completed'">Completed</button>
             </div>
         </div>
     </div>
@@ -51,63 +46,56 @@
 
 <script>
     export default {
-        name: "Calculation",
+        name: "Todo",
         data() {
             return {
-                todos: [
-                ],
+                todos: [],
                 newText: '',
                 totalTodo: 0,
                 visibility: 'all'
             }
         },
-
         methods: {
             addTodo() {
-
                 this.todos.push({
                     text: this.newText,
                     completed: false,
-                    id: 5
+                    id: new Date().getUTCMilliseconds() + '' + new Date().getUTCFullYear() + '' + new Date().getSeconds()
                 })
                 localStorage.setItem('localTodo', JSON.stringify(this.todos))
-
+                this.newText = ''
             },
             removeTodo(i) {
-                this.todos.splice(i, 1)
-            },
-            selectAll() {
-                this.todos.forEach((todo) => {
-                    todo.completed = !todo.completed
-                });
+                if (confirm('Are you sure?')) {
+                    this.todos.splice(i, 1)
+                    localStorage.setItem('localTodo', JSON.stringify(this.todos))
+                }
             },
         },
         computed: {
-            // remainingTodo() {
-            //     let totalTodo = 0;
-            //     this.todos.forEach((todo) => {
-            //         let i = 1;
-            //         if (todo.completed === false)
-            //             totalTodo += i
-            //     });
-            //     return totalTodo
-            // },
-
+            remainingTodo() {
+                let count = 0;
+                this.todos.forEach((todo) => {
+                    let i = 1;
+                    if (todo.completed === false)
+                        count += i
+                });
+                return count
+            },
             filteredTodos() {
-              //  let holder =this.todos
                 if (this.visibility === 'all') {
                     return this.todos
                 } else if (this.visibility === 'active') {
-                    this.todos = this.todos.filter(todo => todo.completed === false)
+                    return this.todos.filter(todo => !todo.completed)
                 } else {
-                    this.todos = this.todos.filter(todo => todo.completed === true)
+                    return this.todos.filter(todo => todo.completed)
                 }
-            }
+            },
         },
         created() {
-          // this.todos.push(JSON.parse(localStorage.getItem('localTodo')))
-            //console.log(JSON.parse(localStorage.getItem('localTodo')))
-            this.todos = JSON.parse(localStorage.getItem('localTodo'))
+            this.$store.dispatch('getLocalStorageData').then(() => {
+                this.todos = this.$store.getters.getLocalTodos
+            })
         }
     }
 </script>
