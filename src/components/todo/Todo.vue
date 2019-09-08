@@ -16,18 +16,16 @@
                     <li class="list-group-item" v-for="(todo,i) in filteredTodos" :key="i">
                         <div class="row">
                             <div class="col-md-2">
-                                <label v-if="todo.completed===true"  style="font-size: 2.5em">
-                                    <input class=""  type="checkbox" v-model="todo.completed">
-                                    <span  class="cr"><i class="fa fa-angellist"></i></span>
+                                <label style="font-size: 2.5em">
+                                    <input class="" type="checkbox" v-model="todo.completed">
                                 </label>
-                                <label v-else style="font-size: 2.5em">
-                                    <input type="checkbox" v-model="todo.completed">
-                                    <span class="cr"><i class="fa fa-hand-o-down"></i></span>
-                                </label>
+
                             </div>
                             <div class="col-md-8">
-                                <label v-if="todo.completed===true" class="col-form-label-lg">{{todo.text}}</label>
-                                <label v-else class="col-form-label-lg"><del>{{todo.text}}</del></label>
+                                <label v-if="todo.completed===true" class="col-form-label-lg"><del>{{todo.text}}</del></label>
+                                <label v-else class="col-form-label-lg">
+                                    {{todo.text}}
+                                </label>
                             </div>
                             <div class="col-md-2">
                                 <button class="fa fa-minus-square" @click="removeTodo(i)"></button>
@@ -68,8 +66,10 @@
                 this.newText = ''
             },
             removeTodo(i) {
-                this.todos.splice(i, 1)
-                localStorage.setItem('localTodo', JSON.stringify(this.todos))
+                if (confirm('Are you sure?')) {
+                    this.todos.splice(i, 1)
+                    localStorage.setItem('localTodo', JSON.stringify(this.todos))
+                }
             },
         },
         computed: {
@@ -93,7 +93,7 @@
             },
         },
         created() {
-            this.$store.dispatch('getLocalStorageData').then(()=>{
+            this.$store.dispatch('getLocalStorageData').then(() => {
                 this.todos = this.$store.getters.getLocalTodos
             })
         }
