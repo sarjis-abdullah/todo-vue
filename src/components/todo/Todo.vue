@@ -1,36 +1,9 @@
 <template>
     <div class="container">
-
-            <SearchForm @addTodo="addTodo" @search="search"/>
-
-
+        <SearchForm @addTodo="addTodo" @search="search"/>
         <div class="row">
             <div class="col-md-6 offset-3">
-                <ul class="list-group">
-                    <li class="list-group-item" v-for="(todo,i) in filteredTodos" :key="i">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <label class="col-form-label-lg">
-                                    <input class="awesome-checkbox__input" type="checkbox" v-model="todo.completed">
-                                </label>
-                            </div>
-                            <div class="col-md-8 text text-capitalize text-justify-around">
-                                <label v-if="todo.completed===true" class="col-form-label-lg">
-                                    <del class="text-danger">{{todo.text}}</del>
-                                </label>
-                                <label v-else class="col-form-label-lg">
-                                    {{todo.text}}
-                                </label>
-                            </div>
-                            <div class="col-md-2">
-                                <label class="col-form-label-lg">
-                                    <button title="Remove" class="fa fa-minus-square text-danger"
-                                            @click="removeTodo(i)"></button>
-                                </label>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                <TodoList :filteredTodos="filteredTodos"></TodoList>
                 <p>{{remainingTodo}} {{remainingTodo===1?"Todo":'Todos'}} Left</p>
             </div>
             <div class="col-md-6 offset-3 my-3">
@@ -44,6 +17,7 @@
 
 <script>
     import SearchForm from "./SearchForm";
+    import TodoList from "./TodoList";
 
     export default {
         name: "Todo",
@@ -55,7 +29,8 @@
             }
         },
         components: {
-            SearchForm
+            SearchForm,
+            TodoList
         },
         methods: {
             addTodo(newText) {
