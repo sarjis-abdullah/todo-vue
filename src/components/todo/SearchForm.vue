@@ -50,24 +50,31 @@ export default {
         alert("Error");
       } else {
         let searchText = document.getElementById("searchText");
-        searchText.focus();
-        this.$emit("addTodo", this.newText);
-        this.errorMessage = "";
-        this.newText = "";
+        let todos = this.$store.getters.getLocalTodos;
+        let index = todos.findIndex(item => item.text === this.newText);
+        if (index === -1) {
+            searchText.focus();
+            this.$emit("addTodo", this.newText);
+            this.errorMessage = "";
+            this.newText = "";
+        } else {
+            this.errorMessage = "Name has already taken!";
+        }
+        
       }
     }
   },
   watch: {
     newText: {
       handler(o, n) {
-        if (this.newText.length < 3) {
+        if (this.newText !== '' && this.newText.length < 3) {
           this.errorMessage = "Please give at-least 3 letters word";
         } else {
           this.errorMessage = "";
         }
       }
     }
-  }
+  },
 };
 </script>
 

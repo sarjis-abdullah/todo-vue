@@ -34,20 +34,13 @@
         },
         methods: {
             addTodo(newText) {
-                this.todos.push({
+                this.todos.unshift({
                     text: newText,
                     completed: false,
                     id: new Date().getUTCMilliseconds() + '' + new Date().getUTCFullYear() + '' + new Date().getSeconds()
                 })
-                localStorage.setItem('localTodo', JSON.stringify(this.todos))
-
-                newText = ''
-            },
-            removeTodo(i) {
-                if (confirm('Are you sure?')) {
-                    this.todos.splice(i, 1)
-                    localStorage.setItem('localTodo', JSON.stringify(this.todos))
-                }
+                let todos = [...new Set(this.todos)]
+                localStorage.setItem('localTodo', JSON.stringify(todos))
             },
             search(keyword) {
                 if (keyword) {

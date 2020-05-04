@@ -18,7 +18,7 @@
                 <div class="col-md-2">
                     <label class="col-form-label-lg">
                         <button title="Remove" class="fa fa-minus-square text-danger"
-                                @click="removeTodo(i)"></button>
+                                @click="removeTodo(todo)"></button>
                     </label>
                 </div>
             </div>
@@ -36,9 +36,12 @@
             }
         },
         methods:{
-            removeTodo(i){
-                if (confirm('Are you sure?')) {
-                    this.todos.splice(i, 1)
+            removeTodo(todo){
+                console.log(todo)
+                if (confirm('Are you sure ??')) {
+                    let index = this.todos.findIndex(item => item.id === todo.id)
+                    this.todos.splice(index, 1)
+                    console.log(todo)
                     localStorage.setItem('localTodo', JSON.stringify(this.todos))
                 }
             }
