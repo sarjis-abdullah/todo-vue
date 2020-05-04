@@ -37,11 +37,15 @@
                 this.$emit('search', this.searchText)
             },
             addTodo(){
-                let searchText = document.getElementById('searchText')
-                searchText.focus()
-                this.$emit('addTodo', this.newText)
-                this.errorMessage = ''
-
+                if (this.errorMessage.length) {
+                    alert("Error")
+                } else {
+                    let searchText = document.getElementById('searchText')
+                    searchText.focus()
+                    this.$emit('addTodo', this.newText)
+                    this.errorMessage = '';
+                    this.newText = '';   
+                }
             }
         },
         watch: {

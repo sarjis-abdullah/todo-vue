@@ -34,7 +34,6 @@
         },
         methods: {
             addTodo(newText) {
-                console.log(newText)
                 this.todos.push({
                     text: newText,
                     completed: false,
@@ -51,13 +50,8 @@
                 }
             },
             search(keyword) {
-                console.log(keyword)
                 if (keyword) {
-                    this.todos = this.todos.filter(todo => {
-                            return todo.text.toLowerCase().includes(keyword.toLowerCase())
-                            // return todo.text.toLowerCase().indexOf(this.searchText.toLowerCase()) !== -1
-                        }
-                    )
+                    this.todos = this.todos.filter(todo => todo.text.toLowerCase().includes(keyword.toLowerCase()))
                 } else {
                     this.todos = this.$store.getters.getLocalTodos
                 }
