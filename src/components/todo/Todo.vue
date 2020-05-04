@@ -39,8 +39,7 @@
                     completed: false,
                     id: new Date().getUTCMilliseconds() + '' + new Date().getUTCFullYear() + '' + new Date().getSeconds()
                 })
-                let todos = [...new Set(this.todos)]
-                localStorage.setItem('localTodo', JSON.stringify(todos))
+                localStorage.setItem('localTodo', JSON.stringify(this.todos))
             },
             search(keyword) {
                 if (keyword) {
