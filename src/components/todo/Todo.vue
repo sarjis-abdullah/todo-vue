@@ -58,9 +58,10 @@ export default {
   },
   computed: {
     remainingTodo() {
-      let count = 0;
-      this.todos.reduce((a,c) => !c.completed ? count++ : 0, 0);
-      return count;
+      return this.todos.reduce((count, todo) => { 
+        todo.completed === false && count++  
+        return count;
+      }, 0);
     },
     filteredTodos() {
       if (this.visibility === "all") {
