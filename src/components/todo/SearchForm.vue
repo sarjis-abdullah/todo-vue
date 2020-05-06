@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="row">
         <div class="col-md-8 offset-2">
-          <form @submit.prevent="search" @keyup.prevent="search">
+          <form @submit.prevent="search" @keyup.prevent="search($event)">
             <input
               id="searchText"
               class="form-control text my-2 py-4"
@@ -42,8 +42,13 @@ export default {
     };
   },
   methods: {
-    search() {
-      this.$emit("search", this.searchText);
+    search(e) {
+      console.log(e.code === "Backspace")
+      if (e.code === "Backspace") {
+        this.$emit("search", null);
+      } else {
+              this.$emit("search", this.searchText);
+      }
     },
     addTodo() {
       if (this.errorMessage.length) {

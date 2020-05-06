@@ -47,11 +47,14 @@ export default {
       localStorage.setItem("localTodo", JSON.stringify(this.todos));
     },
     search(keyword) {
-      if (keyword) {
-        this.todos = this.todos.filter(todo =>
-          todo.text.toLowerCase().includes(keyword.toLowerCase())
+      console.log(keyword)
+      if(keyword){
+        this.todos = this.todos.filter(todo => {
+            return todo.text.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
+            //todo.text.toLowerCase().includes(keyword.toLowerCase())
+            }
         );
-      } else {
+      }else {
         this.todos = this.$store.getters.getLocalTodos;
       }
     }
