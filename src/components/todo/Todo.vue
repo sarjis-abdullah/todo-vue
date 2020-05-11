@@ -49,10 +49,8 @@ export default {
     search(keyword) {
       console.log(keyword)
       if(keyword){
-        this.todos = this.todos.filter(todo => {
-            return todo.text.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
-            //todo.text.toLowerCase().includes(keyword.toLowerCase())
-            }
+        let todos =  JSON.parse(localStorage.getItem('localTodo'));
+        this.todos = todos.filter(todo => todo.text.toLowerCase().includes(keyword.toLowerCase())
         );
       }else {
         this.todos = this.$store.getters.getLocalTodos;
