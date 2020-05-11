@@ -43,12 +43,7 @@ export default {
   },
   methods: {
     search(e) {
-      console.log(e.code === "Backspace")
-      if (e.code === "Backspace") {
-        this.$emit("search", null);
-      } else {
-              this.$emit("search", this.searchText);
-      }
+      this.$emit("search", this.searchText);
     },
     addTodo() {
       if (this.errorMessage.length) {
